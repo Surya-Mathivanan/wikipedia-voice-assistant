@@ -26,6 +26,11 @@ This is a **Flask web application** that allows registered users to search Wikip
 - **External API:** Wikipedia Python API
 
 ---
+## Images:
+![Image](https://github.com/user-attachments/assets/cb904b9d-03ad-43c0-b078-edfd1495db52)
+![Image](https://github.com/user-attachments/assets/332667e8-5f0e-42b9-bd21-e50f1fb08ec3)
+![Image](https://github.com/user-attachments/assets/eaca32aa-54b8-4431-8084-b89240cf7e56)
+![Image](https://github.com/user-attachments/assets/1f15997c-0276-46ea-a290-93601aae93c7)
 
 ## 🏗️ Project Setup
 
