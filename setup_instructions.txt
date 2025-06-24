@@ -1,0 +1,49 @@
+Wikipedia Audio Reader - Setup Instructions
+
+1. Install Python 3.8 or higher
+
+2. Install MySQL Server and create a database:
+   - Install MySQL Server
+   - Create a database named 'wikipedia_app'
+   - Update DB_CONFIG in app.py with your MySQL credentials
+
+3. Install required packages:
+   pip install -r requirements.txt
+
+4. Additional system requirements:
+   - For pyttsx3 (text-to-speech):
+     - Windows: No additional setup needed
+     - Linux: sudo apt-get install espeak espeak-data libespeak-dev
+     - macOS: brew install espeak
+
+5. Run the application:
+   python app.py
+
+6. Access the application:
+   Open your browser and go to http://localhost:5000
+
+7. Features:
+   - User registration and login
+   - Wikipedia content search
+   - Audio summary generation
+   - PDF content download
+   - Search history dashboard
+   - Secure user authentication
+
+8. Default MySQL Configuration:
+   - Host: localhost
+   - User: root
+   - Password: password
+   - Database: wikipedia_app
+   
+   Update these in app.py if your MySQL setup is different.
+
+9. File Storage:
+   - Audio files: static/audio/
+   - PDF files: static/pdf/
+   - These directories are created automatically
+
+10. Security Notes:
+    - Change the secret key in app.py for production
+    - Use environment variables for database credentials
+    - Enable HTTPS in production

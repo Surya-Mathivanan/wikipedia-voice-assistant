@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Wikipedia Audio App{% endblock %}
+
+{% block content %}
+<h2><i class="fas fa-chart-bar"></i> Your Dashboard</h2>
+<p class="lead">Welcome back, {{ username }}! Here's your search history:</p>
+
+<div class="card">
+    <div class="card-header">
+        <h5><i class="fas fa-history"></i> Recent Searches</h5>
+    </div>
+    <div class="card-body">
+        {% if searches %}
+        <div class="search-history">
+            <div class="list-group">
+                {% for search in searches %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ search[0] }}</strong>
+                        <br>
+                        <small class="text-muted">{{ search[1].strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                    </div>
+                    <form method="POST" action="{{ url_for('search') }}" style="display: inline;">
+                        <input type="hidden" name="search_term" value="{{ search[0] }}">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-redo"></i> Search Again
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <p class="text-muted">No searches yet. <a href="{{ url_for('index') }}">Start searching!</a></p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <i class="fas fa-search"></i> New Search
+    </a>
+</div>
+{% endblock %}

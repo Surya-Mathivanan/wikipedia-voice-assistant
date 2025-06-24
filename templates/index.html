@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Wikipedia Audio App{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1><i class="fas fa-book-open text-primary"></i> Welcome to Wikipedia Audio</h1>
+    <p class="lead">Search Wikipedia articles and convert them to audio and PDF</p>
+    <p class="text-muted">Hello, {{ username }}!</p>
+</div>
+
+<div class="search-box">
+    <form method="POST" action="{{ url_for('search') }}">
+        <div class="input-group input-group-lg">
+            <input type="text" class="form-control" name="search_term" placeholder="Search Wikipedia..." required>
+            <button class="btn btn-primary" type="submit">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-volume-up fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Audio Conversion</h5>
+                <p class="card-text">Convert Wikipedia articles to high-quality audio files</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-file-pdf fa-3x text-danger mb-3"></i>
+                <h5 class="card-title">PDF Download</h5>
+                <p class="card-text">Download articles as formatted PDF documents</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="fas fa-robot fa-3x text-success mb-3"></i>
+                <h5 class="card-title">AI Summary</h5>
+                <p class="card-text">Get AI-powered summaries of long articles</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

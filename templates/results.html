@@ -1,0 +1,228 @@
+{% extends "base.html" %} {% block title %}{{ title }} - Wikipedia Audio App{%
+endblock %} {% block content %}
+<div class="back-to-search">
+  <a href="{{ url_for('index') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Back to Search
+  </a>
+</div>
+
+<h1 class="article-title">{{ title }}</h1>
+
+<div class="summary-section">
+  <h5><i class="fas fa-info-circle"></i> Wikipedia Summary</h5>
+  <p>{{ summary }}</p>
+</div>
+
+<div class="ai-summary-section">
+  <h5><i class="fas fa-robot"></i> AI-Generated Summary</h5>
+  <p>{{ ai_summary }}</p>
+</div>
+
+<!-- Audio Player Section -->
+<div class="audio-section">
+  <h5><i class="fas fa-volume-up"></i> Listen to Summary</h5>
+  <div class="audio-player-container">
+    <div id="audio-loading" class="audio-loading">
+      <div class="audio-spinner" role="status">
+        <span class="visually-hidden">Loading audio...</span>
+      </div>
+      <p class="audio-loading-text">Generating audio, please wait...</p>
+    </div>
+
+    <div
+      id="audio-player-section"
+      class="audio-player-section"
+      style="display: none"
+    >
+      <audio id="main-audio-player" controls class="main-audio-player">
+        <source
+          src="{{ url_for('stream_audio', file_id=file_id) }}"
+          type="audio/wav"
+        />
+        Your browser does not support the audio element.
+      </audio>
+
+      <div class="audio-controls">
+        <button id="play-pause-btn" class="btn-play-pause">
+          <i class="fas fa-play"></i> Play
+        </button>
+        <button id="stop-btn" class="btn-stop">
+          <i class="fas fa-stop"></i> Stop
+        </button>
+        <button id="speed-btn" class="btn-speed" data-speed="1">
+          <i class="fas fa-tachometer-alt"></i> Speed: 1x
+        </button>
+      </div>
+      <div class="download-controls">
+        <button id="download-audio-btn" class="btn-download-audio" disabled>
+          <i class="fas fa-download"></i> Download Audio
+        </button>
+        <a
+          href="{{ url_for('download_pdf', title=title, content=content) }}"
+          class="btn-download-pdf"
+        >
+          <i class="fas fa-file-pdf"></i> Download PDF
+        </a>
+      </div>
+      <div class="audio-volume">
+        <label for="volume-control" class="volume-label">Volume:</label>
+        <input
+          type="range"
+          class="volume-range"
+          id="volume-control"
+          min="0"
+          max="100"
+          value="80"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="article-content-section">
+  <h3>Full Article Content</h3>
+  <div class="article-content">{{ content|replace('\n', '<br />')|safe }}</div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  let audioPlayer = null;
+  let isPlaying = false;
+  let currentSpeed = 1;
+
+  // Check if audio is ready
+  function checkAudioReady() {
+    fetch("/check_audio/{{ file_id }}")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.ready) {
+          showAudioPlayer();
+        } else {
+          setTimeout(checkAudioReady, 2000);
+        }
+      })
+      .catch((error) => {
+        console.error("Error checking audio status:", error);
+        setTimeout(checkAudioReady, 3000);
+      });
+  }
+
+  function showAudioPlayer() {
+    document.getElementById("audio-loading").style.display = "none";
+    document.getElementById("audio-player-section").style.display = "block";
+    document.getElementById("download-audio-btn").disabled = false;
+
+    audioPlayer = document.getElementById("main-audio-player");
+    setupAudioControls();
+  }
+
+  function setupAudioControls() {
+    const playPauseBtn = document.getElementById("play-pause-btn");
+    const stopBtn = document.getElementById("stop-btn");
+    const speedBtn = document.getElementById("speed-btn");
+    const volumeControl = document.getElementById("volume-control");
+    const downloadBtn = document.getElementById("download-audio-btn");
+    const downloadPdfBtn = document.querySelector(".btn-download-pdf");
+
+    // Play/Pause functionality
+    playPauseBtn.addEventListener("click", function () {
+      if (isPlaying) {
+        audioPlayer.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+        playPauseBtn.className = "btn-play-pause";
+        isPlaying = false;
+      } else {
+        audioPlayer.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+        playPauseBtn.className = "btn-play-pause playing";
+        isPlaying = true;
+      }
+    });
+
+    // Stop functionality
+    stopBtn.addEventListener("click", function () {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+      playPauseBtn.className = "btn-play-pause";
+      isPlaying = false;
+    });
+
+    // Speed control
+    speedBtn.addEventListener("click", function () {
+      const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+      const currentIndex = speeds.indexOf(currentSpeed);
+      const nextIndex = (currentIndex + 1) % speeds.length;
+      currentSpeed = speeds[nextIndex];
+
+      audioPlayer.playbackRate = currentSpeed;
+      speedBtn.innerHTML = `<i class="fas fa-tachometer-alt"></i> Speed: ${currentSpeed}x`;
+    });
+
+    // Volume control
+    volumeControl.addEventListener("input", function () {
+      audioPlayer.volume = this.value / 100;
+    });
+
+    // Set initial volume
+    audioPlayer.volume = 0.8;
+
+    // Audio event listeners
+    audioPlayer.addEventListener("ended", function () {
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i> Play';
+      playPauseBtn.className = "btn-play-pause";
+      isPlaying = false;
+    });
+
+    // Download audio functionality
+    downloadBtn.addEventListener("click", function () {
+      window.location.href =
+        '{{ url_for("download_audio") }}?title={{ title|urlencode }}&content={{ content|urlencode }}';
+    });
+    // Download PDF functionality (ensure anchor works)
+    if (downloadPdfBtn) {
+      downloadPdfBtn.addEventListener("click", function (e) {
+        // Let anchor work as normal
+      });
+    }
+  }
+
+  // Start checking for audio readiness when page loads
+  document.addEventListener("DOMContentLoaded", function () {
+    checkAudioReady();
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", function (event) {
+    if (
+      audioPlayer &&
+      document.getElementById("audio-player-section").style.display !== "none"
+    ) {
+      switch (event.code) {
+        case "Space":
+          event.preventDefault();
+          document.getElementById("play-pause-btn").click();
+          break;
+        case "KeyS":
+          event.preventDefault();
+          document.getElementById("stop-btn").click();
+          break;
+        case "ArrowUp":
+          event.preventDefault();
+          const volumeSlider = document.getElementById("volume-control");
+          volumeSlider.value = Math.min(100, parseInt(volumeSlider.value) + 10);
+          volumeSlider.dispatchEvent(new Event("input"));
+          break;
+        case "ArrowDown":
+          event.preventDefault();
+          const volumeSliderDown = document.getElementById("volume-control");
+          volumeSliderDown.value = Math.max(
+            0,
+            parseInt(volumeSliderDown.value) - 10
+          );
+          volumeSliderDown.dispatchEvent(new Event("input"));
+          break;
+      }
+    }
+  });
+</script>
+{% endblock %}
