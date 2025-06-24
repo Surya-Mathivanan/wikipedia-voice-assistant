@@ -73,9 +73,10 @@ reportlab
 
  - Use environment variables for DB credentials in production
 
-## 📬 Contact:
- - Surya M
-- 📧 msuryamsurya2003@gmail.com[mailto:msuryamsurya2003@gmail.com]
-- 🔗 GitHub: Surya-Mathivanan[https://github.com/Surya-Mathivanan]
+## 📬 Contact
+
+- **Surya M**  
+- 📧 [msuryamsurya2003@gmail.com](mailto:msuryamsurya2003@gmail.com)  
+- 🔗 [GitHub: Surya-Mathivanan](https://github.com/Surya-Mathivanan)
 
 
