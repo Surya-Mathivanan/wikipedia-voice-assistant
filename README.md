@@ -1,32 +1,81 @@
-# wikipedia-voice-assistant
-A simple Flask web application that fetches Wikipedia summaries and converts the text into speech using pyttsx3.
-## Features
-Fetches summaries from Wikipedia based on user input
-Allows users to specify the number of sentences in the summary
-Converts the summary into speech using the text-to-speech engine
-## Technologies Used
-Python (Flask)
-Wikipedia API (wikipedia library)
-Text-to-Speech (pyttsx3)
-HTML & CSS (for the frontend)  
+# 🧠 Wikipedia Voice Assistant (Flask + MySQL)
 
-## Working Process
-### User Input (HTML Form - index.html)
+This is a **Flask web application** that allows registered users to search Wikipedia articles, listen to summaries using **text-to-speech (TTS)**, and download content as **PDF** or **audio files**. It also includes user authentication and search history features using a **MySQL database**.
 
-Takes a topic name from the user (<input name="wiki_page">).
-Optional: Allows the user to specify the number of sentences (<input name="num_of_sentences">).
-### Flask Backend (app.py)
+---
 
-Receives user input via request.form.
-Fetches Wikipedia summary using wikipedia.summary().
-Converts text to speech using pyttsx3.
-### Response & Output
+## 🚀 Features
 
-Displays the summary on the webpage ({{ summary }}).
-Plays the summary as speech using voicing_text().
-## Usage
-Enter a topic in the input field.
-Choose whether to specify the number of sentences.
-Click submit to get the summary and hear the voice output.
-## License
-This project is open-source and available under the MIT License.
+- 🔐 User Registration & Login (with password hashing)
+- 🔎 Wikipedia Search (summary + full content)
+- 🗣️ Text-to-Speech summary with `pyttsx3`
+- 📄 PDF generation using `reportlab`
+- 📥 Download & stream audio or PDF files
+- 📊 Dashboard to view recent searches
+- ✅ Session-based authentication
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** Flask
+- **Database:** MySQL
+- **Frontend:** HTML, CSS (Jinja Templates)
+- **TTS Engine:** pyttsx3
+- **PDF Generator:** ReportLab
+- **External API:** Wikipedia Python API
+
+---
+
+## 🏗️ Project Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Surya-Mathivanan/wikipedia-voice-assistant.git
+cd wikipedia-voice-assistant
+```
+
+
+## 📁 Folder Structure:
+
+```📦 wikipedia-voice-assistant
+├── app.py
+├── templates/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── results.html
+│   ├── result.html
+│   ├── dashboard.html
+│   └── disambiguation.html
+├── static/
+│   ├── audio/
+│   └── pdf/
+├── requirements.txt
+└── README.md
+```
+
+## ✅ Requirements:
+```
+Flask
+mysql-connector-python
+wikipedia
+pyttsx3
+reportlab
+
+```
+
+## 🔒 Security Notes:
+ - Passwords are stored using hashing (werkzeug.security)
+
+ - CSRF protection and email validation can be added for production
+
+ - Use environment variables for DB credentials in production
+
+## 📬 Contact:
+ - Surya M
+- 📧 msuryamsurya2003@gmail.com[mailto:msuryamsurya2003@gmail.com]
+- 🔗 GitHub: Surya-Mathivanan[https://github.com/Surya-Mathivanan]
+
+
