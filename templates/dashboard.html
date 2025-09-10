@@ -1,45 +1,103 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - Wikipedia Audio App{% endblock %}
+{% block title %}Dashboard - Wikipedia Voice Assistant{% endblock %}
 
 {% block content %}
-<h2><i class="fas fa-chart-bar"></i> Your Dashboard</h2>
-<p class="lead">Welcome back, {{ username }}! Here's your search history:</p>
-
-<div class="card">
-    <div class="card-header">
-        <h5><i class="fas fa-history"></i> Recent Searches</h5>
-    </div>
-    <div class="card-body">
-        {% if searches %}
-        <div class="search-history">
-            <div class="list-group">
-                {% for search in searches %}
-                <div class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong>{{ search[0] }}</strong>
-                        <br>
-                        <small class="text-muted">{{ search[1].strftime('%Y-%m-%d %H:%M:%S') }}</small>
-                    </div>
-                    <form method="POST" action="{{ url_for('search') }}" style="display: inline;">
-                        <input type="hidden" name="search_term" value="{{ search[0] }}">
-                        <button type="submit" class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-redo"></i> Search Again
-                        </button>
-                    </form>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% else %}
-        <p class="text-muted">No searches yet. <a href="{{ url_for('index') }}">Start searching!</a></p>
-        {% endif %}
-    </div>
+<div class="d-flex align-items-center mb-4">
+  <div class="feature-icon me-3" style="width: 50px; height: 50px; font-size: 1.25rem;">
+    <i class="fas fa-chart-bar"></i>
+  </div>
+  <div>
+    <h2 class="mb-1">Your Dashboard</h2>
+    <p class="text-muted mb-0">Welcome back, <strong>{{ username }}</strong>! Here's your activity overview</p>
+  </div>
 </div>
 
-<div class="mt-4">
-    <a href="{{ url_for('index') }}" class="btn btn-primary">
-        <i class="fas fa-search"></i> New Search
-    </a>
+<div class="row mb-4">
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="feature-icon mx-auto mb-3" style="width: 60px; height: 60px;">
+          <i class="fas fa-search"></i>
+        </div>
+        <h5 class="fw-bold">{{ searches|length }}</h5>
+        <p class="text-muted mb-0">Total Searches</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="feature-icon mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--success-color), #059669);">
+          <i class="fas fa-volume-up"></i>
+        </div>
+        <h5 class="fw-bold">{{ searches|length }}</h5>
+        <p class="text-muted mb-0">Audio Generated</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center">
+      <div class="card-body">
+        <div class="feature-icon mx-auto mb-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--danger-color), #dc2626);">
+          <i class="fas fa-file-pdf"></i>
+        </div>
+        <h5 class="fw-bold">{{ searches|length }}</h5>
+        <p class="text-muted mb-0">PDFs Created</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">
+      <i class="fas fa-history me-2"></i>
+      Recent Search History
+    </h5>
+  </div>
+  <div class="card-body">
+    {% if searches %}
+    <div class="search-history">
+      {% for search in searches %}
+      <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
+        <div class="flex-grow-1">
+          <h6 class="mb-1 fw-semibold">{{ search[0] }}</h6>
+          <small class="text-muted">
+            <i class="fas fa-clock me-1"></i>
+            {{ search[1].strftime('%B %d, %Y at %I:%M %p') }}
+          </small>
+        </div>
+        <form method="POST" action="{{ url_for('search') }}" class="ms-3">
+          <input type="hidden" name="search_term" value="{{ search[0] }}">
+          <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-redo me-1"></i>
+            Search Again
+          </button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+      <div class="feature-icon mx-auto mb-3" style="width: 80px; height: 80px; background: var(--background-tertiary); color: var(--text-muted);">
+        <i class="fas fa-search"></i>
+      </div>
+      <h5 class="text-muted mb-3">No searches yet</h5>
+      <p class="text-muted mb-4">Start exploring Wikipedia articles to see your history here</p>
+      <a href="{{ url_for('index') }}" class="btn btn-primary">
+        <i class="fas fa-search me-2"></i>
+        Start Searching
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="text-center mt-4">
+  <a href="{{ url_for('index') }}" class="btn btn-primary">
+    <i class="fas fa-plus me-2"></i>
+    New Search
+  </a>
 </div>
 {% endblock %}

@@ -4,6 +4,9 @@ This is a **Flask web application** that allows registered users to search Wikip
 
 ---
 
+## PDF Overview:
+ - [📌 Project Overview – Wikipedia Voice Assistant.pdf](https://github.com/user-attachments/files/21146487/Project.Overview.Wikipedia.Voice.Assistant.pdf)
+
 ## 🚀 Features
 
 - 🔐 User Registration & Login (with password hashing)

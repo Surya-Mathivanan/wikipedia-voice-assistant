@@ -1,25 +1,60 @@
 {% extends "base.html" %}
 
-{% block title %}Disambiguation - Wikipedia Audio App{% endblock %}
+{% block title %}Multiple Results - Wikipedia Voice Assistant{% endblock %}
 
 {% block content %}
 <div class="mb-3">
-    <a href="{{ url_for('index') }}" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Back to Search
-    </a>
+  <a href="{{ url_for('index') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left me-2"></i>Back to Search
+  </a>
 </div>
 
-<h2><i class="fas fa-question-circle"></i> Multiple Results Found</h2>
-<p class="lead">Your search for "{{ search_term }}" returned multiple results. Please select the one you're looking for:</p>
-
-<div class="list-group">
-    {% for option in options %}
-    <form method="POST" action="{{ url_for('search') }}" style="display: inline;">
-        <input type="hidden" name="search_term" value="{{ option }}">
-        <button type="submit" class="list-group-item list-group-item-action">
-            <i class="fas fa-book"></i> {{ option }}
-        </button>
-    </form>
-    {% endfor %}
+<div class="text-center mb-5">
+  <div class="feature-icon mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--warning-color), #d97706);">
+    <i class="fas fa-question-circle"></i>
+  </div>
+  <h2 class="fw-bold mb-3">Multiple Results Found</h2>
+  <p class="lead text-muted">
+    Your search for "<strong>{{ search_term }}</strong>" returned multiple results. 
+    Please select the one you're looking for:
+  </p>
 </div>
+
+<div class="row">
+  <div class="col-lg-8 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-list me-2"></i>
+          Available Options
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        {% for option in options %}
+        <form method="POST" action="{{ url_for('search') }}" class="border-bottom last:border-0">
+          <input type="hidden" name="search_term" value="{{ option }}">
+          <button type="submit" class="w-100 p-3 border-0 bg-transparent text-start d-flex align-items-center justify-content-between hover-bg-light">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-book text-primary me-3"></i>
+              <span class="fw-semibold">{{ option }}</span>
+            </div>
+            <i class="fas fa-chevron-right text-muted"></i>
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.hover-bg-light:hover {
+  background-color: var(--background-secondary) !important;
+  transition: background-color 0.2s ease;
+}
+
+.border-bottom:last-child {
+  border-bottom: none !important;
+}
+</style>
 {% endblock %}
